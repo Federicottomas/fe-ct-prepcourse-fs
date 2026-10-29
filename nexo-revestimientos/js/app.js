@@ -357,9 +357,25 @@
     $("#desp-pct").textContent = Math.round((CFG.desperdicio != null ? CFG.desperdicio : 0.1) * 100);
   }
 
+  // Halo de luz que sigue al mouse (solo con mouse, no en celulares).
+  function haloMouse() {
+    var aura = document.getElementById("aura");
+    if (!aura || !window.matchMedia("(pointer: fine)").matches) return;
+    var pend = null;
+    window.addEventListener("pointermove", function (e) {
+      if (pend) return;
+      pend = requestAnimationFrame(function () {
+        aura.style.setProperty("--mx", e.clientX + "px");
+        aura.style.setProperty("--my", e.clientY + "px");
+        pend = null;
+      });
+    }, { passive: true });
+  }
+
   // ---------- Inicio ----------
 
   datosContacto();
+  haloMouse();
   bind();
   cargarProductos().then(function (lista) {
     items = lista;
