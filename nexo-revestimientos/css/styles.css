@@ -21,6 +21,11 @@
   --f-body: "Source Sans 3", "Helvetica Neue", Arial, system-ui, sans-serif;
   --f-label: "Montserrat", "Helvetica Neue", Arial, system-ui, sans-serif;
 
+  --aura-azul: rgba(70, 112, 170, .85);
+  --aura-madera: rgba(186, 138, 90, .55);
+  --aura-acero: rgba(176, 188, 204, .32);
+  --aura-petroleo: rgba(30, 130, 140, .6);
+
   --r: 10px;
   --steel: linear-gradient(180deg, var(--steel-1) 0%, var(--steel-2) 55%, var(--steel-1) 70%, var(--steel-3) 100%);
   color-scheme: dark;
@@ -63,6 +68,22 @@ p { margin: 0; }
   background-clip: text;
   color: transparent;
 }
+
+/* Fondo: degradé vivo en grafito, acero y un toque cálido de madera, que se mueve y cambia de tono muy lento */
+.aura { position: fixed; inset: 0; z-index: -1; overflow: hidden; background: var(--bg); animation: tono 48s ease-in-out infinite alternate; }
+.aura span { position: absolute; border-radius: 50%; filter: blur(70px); will-change: transform; }
+.aura .a1 { width: 70vmax; height: 70vmax; left: -22vmax; top: -28vmax; background: radial-gradient(circle, var(--aura-azul), transparent 65%); animation: flota1 34s ease-in-out infinite alternate; }
+.aura .a2 { width: 60vmax; height: 60vmax; right: -24vmax; top: 18vh; background: radial-gradient(circle, var(--aura-madera), transparent 65%); animation: flota2 41s ease-in-out infinite alternate; }
+.aura .a3 { width: 55vmax; height: 55vmax; left: 18vw; bottom: -30vmax; background: radial-gradient(circle, var(--aura-acero), transparent 65%); animation: flota3 29s ease-in-out infinite alternate; }
+.aura .a4 { width: 40vmax; height: 40vmax; left: 40vw; top: 30vh; background: radial-gradient(circle, var(--aura-petroleo), transparent 65%); animation: flota1 53s ease-in-out infinite alternate-reverse; }
+.aura::after {
+  content: ""; position: absolute; inset: 0; opacity: .07; mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+@keyframes flota1 { to { transform: translate(18vw, 14vh) scale(1.15); } }
+@keyframes flota2 { to { transform: translate(-22vw, -12vh) scale(.9); } }
+@keyframes flota3 { to { transform: translate(-12vw, -20vh) scale(1.2); } }
+@keyframes tono { 0% { filter: hue-rotate(-18deg); } 50% { filter: hue-rotate(14deg); } 100% { filter: hue-rotate(32deg); } }
 
 /* Botones */
 .btn {
@@ -178,7 +199,7 @@ body::before {
 
 /* Secciones */
 .section { padding-block: 72px; }
-.section-alt { background: var(--surface); border-block: 1px solid var(--line); }
+.section-alt { background: color-mix(in srgb, var(--surface) 45%, transparent); border-block: 1px solid var(--line); }
 .section-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px 24px; margin-bottom: 24px; }
 .stock-note { color: var(--muted); font: .8rem/1.4 var(--f-label); }
 
@@ -201,10 +222,10 @@ body::before {
 /* Tarjetas */
 .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr)); gap: 20px; }
 .card {
-  display: grid; grid-template-rows: auto 1fr; background: var(--surface);
+  display: grid; grid-template-rows: auto 1fr; background: color-mix(in srgb, var(--surface) 84%, transparent);
   border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; min-width: 0;
 }
-.section-alt .card { background: var(--surface-2); }
+.section-alt .card { background: color-mix(in srgb, var(--surface-2) 84%, transparent); }
 .swatch { aspect-ratio: 4 / 3; position: relative; max-width: 100%; }
 .swatch img { width: 100%; height: 100%; object-fit: cover; }
 .badge {
@@ -243,7 +264,7 @@ body::before {
 .calc-copy { display: grid; gap: 14px; min-width: 0; }
 .calc-copy p:not(.eyebrow) { color: var(--muted); max-width: 52ch; }
 .calc-form {
-  display: grid; gap: 8px; padding: 24px; background: var(--bg);
+  display: grid; gap: 8px; padding: 24px; background: color-mix(in srgb, var(--bg) 78%, transparent);
   border: 1px solid var(--line); border-radius: 14px; min-width: 0;
 }
 .calc-form label { font-size: .85rem; color: var(--muted); margin-top: 8px; }
@@ -319,4 +340,5 @@ body::before {
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .btn { transition: none; }
+  .aura, .aura span { animation: none; }
 }
