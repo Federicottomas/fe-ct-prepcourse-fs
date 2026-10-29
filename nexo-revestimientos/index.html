@@ -18,7 +18,7 @@
 </head>
 <body>
 
-<div class="aura" id="aura" aria-hidden="true"><span class="lamas"></span><span class="fria"></span><span class="calida"></span><span class="brillo"></span><span class="halo"></span></div>
+<div class="aura" id="aura" aria-hidden="true"><span class="fria"></span><span class="calida"></span><span class="halo"></span><canvas id="obra"></canvas></div>
 
 <header class="topbar">
   <div class="wrap topbar-in">
@@ -49,14 +49,8 @@
           <a class="btn btn-ghost" href="#calculadora">Calcular cuántos metros necesito</a>
         </div>
       </div>
-      <div class="hero-wall" aria-hidden="true">
-        <div class="slab s-lama" style="--c:#f2f2ef"></div>
-        <div class="slab s-lama madera" style="--c:#c9b59a"></div>
-        <div class="slab s-lama dark" style="--c:#1d1e20"></div>
-        <div class="slab s-lama madera" style="--c:#9a6c48"></div>
-        <img class="hero-logo" src="img/logo.svg" alt="">
-      </div>
-    </div>
+      <div class="hero-slot" id="hero-slot" aria-hidden="true"></div>
+        </div>
     <div class="wrap">
       <ul class="perks">
         <li><strong>Impermeable</strong><span>Ideal para baños, cocinas, lavaderos y galerías.</span></li>
@@ -179,5 +173,6 @@
 
 <script src="js/config.js"></script>
 <script src="js/app.js"></script>
+<script src="js/fondo.js"></script>
 </body>
 </html>

@@ -24,7 +24,6 @@
   --luz-fria: rgba(150, 178, 214, .34);
   --luz-calida: rgba(214, 178, 132, .22);
   --luz-halo: rgba(200, 212, 228, .1);
-  --junta: 120px;
 
   --r: 10px;
   --steel: linear-gradient(180deg, var(--steel-1) 0%, var(--steel-2) 55%, var(--steel-1) 70%, var(--steel-3) 100%);
@@ -69,30 +68,19 @@ p { margin: 0; }
   color: transparent;
 }
 
-/* Fondo: showroom de noche. Juntas de machimbre muy tenues, luz cenital que alterna
-   entre frío y cálido, un reflejo de acero que barre la pantalla y un halo que sigue al mouse. */
+/* Fondo: showroom de noche con luz cenital fría/cálida, halo que sigue al mouse y,
+   en el canvas #obra, un rincón en plano técnico donde se colocan los paneles (js/fondo.js). */
 .aura { position: fixed; inset: 0; z-index: -1; overflow: hidden; background: radial-gradient(140% 90% at 50% 0%, #15181c 0%, var(--bg) 55%, #060707 100%); }
 .aura span { position: absolute; inset: 0; pointer-events: none; }
-.aura .lamas {
-  background: repeating-linear-gradient(90deg, transparent 0 calc(var(--junta) - 2px), rgba(0,0,0,.45) calc(var(--junta) - 2px) calc(var(--junta) - 1px), rgba(255,255,255,.045) calc(var(--junta) - 1px) var(--junta));
-  -webkit-mask-image: radial-gradient(120% 75% at 50% 0%, #000 0%, rgba(0,0,0,.5) 45%, transparent 85%);
-  mask-image: radial-gradient(120% 75% at 50% 0%, #000 0%, rgba(0,0,0,.5) 45%, transparent 85%);
-}
 .aura .fria { background: radial-gradient(70% 55% at 50% -8%, var(--luz-fria), transparent 70%); animation: alterna 22s ease-in-out infinite alternate; }
 .aura .calida { background: radial-gradient(60% 50% at 78% -5%, var(--luz-calida), transparent 70%); animation: alterna 22s ease-in-out infinite alternate-reverse; }
-.aura .brillo {
-  inset: -20% -60%;
-  background: linear-gradient(105deg, transparent 42%, rgba(255,255,255,.045) 48%, rgba(255,255,255,.085) 50%, rgba(255,255,255,.045) 52%, transparent 58%);
-  animation: barrido 16s cubic-bezier(.45,0,.25,1) infinite;
-}
 .aura .halo { background: radial-gradient(520px circle at var(--mx, 50%) var(--my, -20%), var(--luz-halo), transparent 70%); transition: opacity .6s ease; }
 .aura::after {
   content: ""; position: absolute; inset: 0; opacity: .06; mix-blend-mode: overlay;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 @keyframes alterna { from { opacity: .25; } to { opacity: 1; } }
-@keyframes barrido { 0% { transform: translateX(-45%); } 55%, 100% { transform: translateX(45%); } }
-@media (max-width: 700px) { .aura { --junta: 64px; } }
+.aura canvas { position: absolute; inset: 0; width: 100%; height: 100%; transition: opacity .2s linear; }
 
 /* Botones */
 .btn {
@@ -132,23 +120,13 @@ body::before {
 @media (max-width: 860px) { .nav { display: none; } }
 
 /* Hero */
-.hero { padding-block: 56px 32px; overflow: hidden; }
-.hero-in { display: grid; grid-template-columns: 1.15fr 1fr; gap: 48px; align-items: center; }
+.hero { padding-block: clamp(56px, 12vh, 120px) 32px; overflow: hidden; }
+.hero-in { display: grid; grid-template-columns: minmax(0, 600px) 1fr; gap: 32px; align-items: center; }
+.hero-slot { min-height: min(64vh, 580px); }
 .hero-copy { min-width: 0; display: grid; gap: 20px; justify-items: start; }
 .hero h1 { font: 800 clamp(2.2rem, 5.6vw, 3.9rem)/1.06 var(--f-display); letter-spacing: -.035em; }
 .lead { color: var(--muted); font-size: 1.08rem; max-width: 56ch; }
 .hero-cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 6px; }
-
-.hero-wall {
-  position: relative; aspect-ratio: 1; max-width: 100%;
-  display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 6px;
-  border-radius: 18px; overflow: hidden; border: 1px solid var(--line);
-}
-.slab { min-height: 0; }
-.hero-logo {
-  position: absolute; left: 50%; top: 50%; width: 46%; transform: translate(-50%, -50%);
-  border-radius: 50%; box-shadow: 0 20px 60px rgba(0,0,0,.65), 0 0 0 6px var(--bg);
-}
 
 .perks {
   list-style: none; margin: 48px 0 0; padding: 0;
@@ -160,8 +138,8 @@ body::before {
 .perks span { color: var(--muted); font-size: .92rem; }
 
 @media (max-width: 860px) {
-  .hero-in { grid-template-columns: 1fr; gap: 32px; }
-  .hero-wall { max-width: 420px; width: 100%; justify-self: center; }
+  .hero-in { grid-template-columns: 1fr; gap: 8px; }
+  .hero-slot { min-height: max(300px, 46vh); }
   .perks { grid-template-columns: 1fr 1fr; }
 }
 
@@ -193,7 +171,6 @@ body::before {
 .s-perfil .pf { fill: var(--c); stroke: rgba(255,255,255,.55); stroke-width: .8; stroke-linejoin: round; }
 .s-perfil.dark .pf { stroke: rgba(255,255,255,.7); }
 .s-perfil .pnl { fill: none; stroke: var(--muted); stroke-width: .8; stroke-dasharray: 3 2.5; }
-.hero-wall .s-lama { --lama: 50%; }
 
 /* Selector de color */
 .colors { display: grid; gap: 8px; }
@@ -350,5 +327,4 @@ body::before {
   html { scroll-behavior: auto; }
   .btn { transition: none; }
   .aura span { animation: none; }
-  .aura .brillo { display: none; }
 }
