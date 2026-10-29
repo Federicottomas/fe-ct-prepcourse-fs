@@ -6,7 +6,7 @@ GitHub Pages, Netlify o Vercel.
 
 ## Qué tiene
 
-- **Paneles** como pared de lamas por color (se abren al tocarlas) y **Terminaciones** como ficha técnica, en secciones separadas.
+- **Paneles** y **Terminaciones** en secciones separadas, con tarjetas por producto y selector de color en los perfiles.
 - **Indicador de stock** en cada producto: En stock / Últimos metros o unidades / Sin stock / Consultar.
 - **Calculadora**: con el ancho y alto de la pared dice cuántos metros lineales de panel y cuántos perfiles hacen falta (+10% de desperdicio).
 - **Presupuesto**: el cliente agrega productos, colores y cantidades y lo manda armado por WhatsApp.

@@ -41,57 +41,56 @@
 <main id="inicio">
 
   <section class="hero">
-    <div class="wrap">
-      <h1 class="hero-title">Precisión<br>en cada panel.</h1>
-      <div class="hero-row">
+    <div class="wrap hero-in">
+      <div class="hero-copy">
+        <h1 class="hero-title">Precisión en cada panel.</h1>
         <p class="lead">Paneles y terminaciones de PVC para cielorrasos y paredes. Cortados a la medida de tu ambiente y listos para instalar.</p>
         <div class="hero-cta">
-          <a class="btn btn-solid" href="#paneles">Ver colección</a>
+          <a class="btn btn-solid" href="#paneles">Ver paneles</a>
           <a class="btn btn-line" href="#calculadora">Calcular metros</a>
         </div>
       </div>
+      <div class="hero-wall" aria-hidden="true">
+        <span class="s-lama" style="--c:#f2f2ef"></span>
+        <span class="s-lama madera" style="--c:#c9b59a"></span>
+        <span class="s-lama dark" style="--c:#1d1e20"></span>
+        <span class="s-lama madera" style="--c:#9a6c48"></span>
+        <img class="hero-logo" src="img/logo.svg" alt="">
+      </div>
+    </div>
+    <div class="wrap">
       <dl class="datos">
         <div><dt>Espesor</dt><dd>10 mm</dd></div>
         <div><dt>Anchos</dt><dd>20 y 25 cm</dd></div>
-        <div><dt>Terminaciones</dt><dd>4 colores</dd></div>
+        <div><dt>Colores</dt><dd>Blanco, negro, fresno y Valencia</dd></div>
         <div><dt>Venta</dt><dd>Por metro lineal</dd></div>
       </dl>
-    </div>
-    <div class="muestrario" aria-hidden="true">
-      <span class="s-lama" style="--c:#f2f2ef"></span>
-      <span class="s-lama madera" style="--c:#c9b59a"></span>
-      <span class="s-lama dark" style="--c:#1d1e20"></span>
-      <span class="s-lama madera" style="--c:#9a6c48"></span>
-      <span class="s-lama" style="--c:#f2f2ef"></span>
     </div>
   </section>
 
   <section id="paneles" class="section">
     <div class="wrap">
       <header class="section-head">
-        <span class="idx">01</span>
         <h2>Paneles</h2>
-        <p class="section-sub">Machimbre de PVC de 10 mm. Tocá un color para ver el detalle.</p>
+        <p class="section-sub">Machimbre de PVC de 10 mm, por metro lineal.</p>
       </header>
-      <div class="lamas" id="lamas"></div>
+      <div class="grid grid-paneles" id="paneles-grid"></div>
     </div>
   </section>
 
   <section id="terminaciones" class="section">
     <div class="wrap">
       <header class="section-head">
-        <span class="idx">02</span>
         <h2>Terminaciones</h2>
         <p class="section-sub">Molduras, perfiles y uniones en barras de 3 m, en los mismos colores que los paneles.</p>
       </header>
-      <ul class="perfiles" id="perfiles"></ul>
+      <div class="grid grid-perfiles" id="perfiles"></div>
     </div>
   </section>
 
   <section id="calculadora" class="section">
     <div class="wrap calc">
       <header class="section-head">
-        <span class="idx">03</span>
         <h2>Calculadora</h2>
         <p class="section-sub">Medí el ancho y el alto de la pared, o el largo y el ancho del techo. Sumamos un <span id="desp-pct">10</span>% por cortes y te decimos cuántos perfiles van en el contorno.</p>
       </header>
@@ -121,7 +120,6 @@
   <section id="proceso" class="section">
     <div class="wrap">
       <header class="section-head">
-        <span class="idx">04</span>
         <h2>Cómo trabajamos</h2>
       </header>
       <ol class="steps">
@@ -135,7 +133,7 @@
 
   <section id="contacto" class="section contacto">
     <div class="wrap">
-      <h2 class="contact-title">Hablemos de<br>tu proyecto.</h2>
+      <header class="section-head"><h2>Hablemos de tu proyecto</h2><p class="section-sub">Mandanos medidas y fotos del lugar y te asesoramos sin compromiso.</p></header>
       <div class="contact-grid">
         <a class="btn btn-solid btn-lg" data-wa="Hola Nexo! Quería pedir un presupuesto." href="#" target="_blank" rel="noopener">Pedir presupuesto por WhatsApp</a>
         <dl class="contact-list">

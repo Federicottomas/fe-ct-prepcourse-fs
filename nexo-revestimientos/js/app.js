@@ -8,7 +8,6 @@
   var items = [];   // filas tal cual vienen (cada color es una fila)
   var grupos = [];  // filas agrupadas por "grupo" -> una tarjeta cada una
   var elegido = {}; // grupo -> índice de la variante elegida
-  var abierto = null; // panel desplegado en la pared de lamas
   var cart = loadCart();
 
   var $ = function (sel) { return document.querySelector(sel); };
@@ -150,52 +149,43 @@
     return "s-lama" + (p.textura === "madera" ? " madera" : "") + (esOscuro(p.color) ? " dark" : "");
   }
 
-  // ---------- Paneles: pared de lamas ----------
+  // ---------- Paneles ----------
 
-  function lama(p) {
-    var open = p.id === abierto;
-    var titulo = p.color_nombre + (p.ancho_cm !== 20 ? " " + fmtNum.format(p.ancho_cm) + " cm" : "");
+  function tarjetaPanel(p) {
     var enCart = cart[p.id];
+    var media = p.imagen
+      ? '<div class="card-media"><img src="' + esc(p.imagen) + '" alt="' + esc(p.nombre) + '" loading="lazy">'
+      : '<div class="card-media ' + claseLama(p) + '" style="--c:' + esc(p.color) + '">';
     return (
-      '<div class="lama" data-lama="' + esc(p.id) + '" aria-expanded="' + open + '">' +
-        '<button type="button" class="lama-face ' + claseLama(p) + '" style="--c:' + esc(p.color) + '" data-open="' + esc(p.id) + '" aria-label="Ver ' + esc(p.nombre) + '"></button>' +
-        '<span class="lama-tag">' + esc(p.color_nombre) + " · " + fmtNum.format(p.ancho_cm) + " cm</span>" +
-        '<div class="lama-info">' +
-          '<div class="lama-top"><h3>' + esc(titulo) + "</h3>" + badge(p) + "</div>" +
+      '<article class="card">' + media + badge(p) + "</div>" +
+        '<div class="card-body">' +
+          '<div class="card-head"><span class="card-kicker">Panel ' + fmtNum.format(p.ancho_cm) + " cm</span>" +
+            "<h3>" + esc(p.color_nombre) + "</h3></div>" +
           '<dl class="specs">' +
-            "<div><dt>Ancho</dt><dd>" + fmtNum.format(p.ancho_cm) + " cm</dd></div>" +
-            "<div><dt>Espesor</dt><dd>" + fmtNum.format(p.espesor_mm) + " mm</dd></div>" +
-            "<div><dt>Cubre</dt><dd>" + fmtNum.format(anchoM(p)) + " m² / m</dd></div>" +
-            "<div><dt>Uso</dt><dd>" + esc(p.uso || "") + "</dd></div>" +
+            "<dt>Ancho</dt><dd>" + fmtNum.format(p.ancho_cm) + " cm</dd>" +
+            "<dt>Espesor</dt><dd>" + fmtNum.format(p.espesor_mm) + " mm</dd>" +
+            "<dt>Cubre</dt><dd>" + fmtNum.format(anchoM(p)) + " m² por metro</dd>" +
           "</dl>" +
-          '<div class="buy">' + precio(p) +
+          '<p class="card-uso">' + esc(p.uso || "") + "</p>" +
+          '<div class="card-foot">' + precio(p) +
             '<div class="buy-ctl">' +
-              '<input type="number" min="1" inputmode="numeric" id="m-' + esc(p.id) + '" value="' + (enCart || 10) + '" aria-label="Metros lineales">' +
+              '<input type="number" min="1" inputmode="numeric" id="m-' + esc(p.id) + '" value="' + (enCart || 10) + '" aria-label="Metros lineales de ' + esc(p.nombre) + '">' +
               '<span class="unit">m</span>' +
               '<button type="button" class="btn btn-solid btn-sm add' + (enCart ? " added" : "") + '" data-add="' + esc(p.id) + '">' + (enCart ? "Actualizar" : "Agregar") + "</button>" +
             "</div>" +
           "</div>" +
         "</div>" +
-      "</div>"
+      "</article>"
     );
   }
 
   function renderPaneles() {
-    var lista = items.filter(function (p) { return p.tipo === "panel"; });
-    if (!abierto && lista.length) abierto = lista[0].id;
-    $("#lamas").innerHTML = lista.map(lama).join("");
+    $("#paneles-grid").innerHTML = items.filter(function (p) { return p.tipo === "panel"; }).map(tarjetaPanel).join("");
   }
 
-  function abrir(id) {
-    abierto = id;
-    document.querySelectorAll("#lamas .lama").forEach(function (el) {
-      el.setAttribute("aria-expanded", String(el.getAttribute("data-lama") === id));
-    });
-  }
+  // ---------- Terminaciones ----------
 
-  // ---------- Terminaciones: ficha técnica ----------
-
-  function fila(g) {
+  function tarjetaPerfil(g) {
     var p = variante(g);
     var colores = '<div class="colors"><span class="colors-label">Color · <strong>' + esc(p.color_nombre) + "</strong></span>" +
       '<div class="dots">' + g.variantes.map(function (v, i) {
@@ -204,20 +194,24 @@
       }).join("") + "</div></div>";
     var enCart = cart[p.id];
     return (
-      '<li class="perfil">' +
-        '<div class="corte" style="--c:' + esc(p.color) + '"><svg viewBox="0 0 120 80" aria-hidden="true">' + (PERFILES[p.perfil] || "") + "</svg></div>" +
-        '<div class="perfil-nombre"><h3>' + esc(p.nombre) + "</h3><p>" + esc(p.uso || "") + "</p></div>" +
-        '<div class="perfil-meta">' + colores + "</div>" +
-        '<div class="perfil-buy">' + badge(p) + precio(p) +
-          '<button type="button" class="btn btn-line btn-sm add' + (enCart ? " added" : "") + '" data-add="' + esc(p.id) + '">' +
-            (enCart ? "✓ " + enCart + " en presupuesto" : "Agregar") + "</button>" +
+      '<article class="card">' +
+        '<div class="card-media corte" style="--c:' + esc(p.color) + '"><svg viewBox="0 0 120 80" aria-hidden="true">' + (PERFILES[p.perfil] || "") + "</svg>" + badge(p) + "</div>" +
+        '<div class="card-body">' +
+          '<div class="card-head"><span class="card-kicker">Barra de ' + fmtNum.format(p.largo_m) + " m</span>" +
+            "<h3>" + esc(p.nombre.replace(/\s*(×|x)\s*3 m$|\s3 m$/, "")) + "</h3></div>" +
+          '<p class="card-uso">' + esc(p.uso || "") + "</p>" +
+          colores +
+          '<div class="card-foot"><div class="card-foot-row">' + precio(p) +
+            '<button type="button" class="btn btn-line btn-sm add' + (enCart ? " added" : "") + '" data-add="' + esc(p.id) + '">' +
+              (enCart ? "✓ " + enCart + " agregado" + (enCart > 1 ? "s" : "") : "Agregar") + "</button>" +
+          "</div></div>" +
         "</div>" +
-      "</li>"
+      "</article>"
     );
   }
 
   function renderPerfiles() {
-    $("#perfiles").innerHTML = grupos.filter(function (g) { return g.variantes[0].tipo === "perfil"; }).map(fila).join("");
+    $("#perfiles").innerHTML = grupos.filter(function (g) { return g.variantes[0].tipo === "perfil"; }).map(tarjetaPerfil).join("");
   }
 
   function renderCatalogo() { renderPaneles(); renderPerfiles(); }
@@ -299,9 +293,7 @@
   // ---------- Eventos ----------
 
   function bind() {
-    $("#lamas").addEventListener("click", function (e) {
-      var face = e.target.closest("[data-open]");
-      if (face) { abrir(face.getAttribute("data-open")); return; }
+    $("#paneles-grid").addEventListener("click", function (e) {
       var b = e.target.closest("[data-add]");
       if (!b) return;
       var id = b.getAttribute("data-add");
@@ -371,6 +363,6 @@
     calcular();
     renderCart();
   }).catch(function () {
-    $("#lamas").outerHTML = '<p class="section-sub">No pudimos cargar el catálogo. Consultanos por WhatsApp.</p>';
+    $("#paneles-grid").outerHTML = '<p class="section-sub">No pudimos cargar el catálogo. Consultanos por WhatsApp.</p>';
   });
 })();
