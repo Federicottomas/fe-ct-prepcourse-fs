@@ -7,9 +7,9 @@ GitHub Pages, Netlify o Vercel.
 ## Qué tiene
 
 - **Catálogo** con filtros por tipo, buscador y "solo con stock".
-- **Indicador de stock** en cada placa: En stock / Últimas N unidades / Sin stock.
-- **Calculadora**: con el ancho y alto de la pared dice cuántas placas hacen falta (+10% de desperdicio).
-- **Presupuesto**: el cliente agrega placas y cantidades y lo manda armado por WhatsApp.
+- **Indicador de stock** en cada producto: En stock / Últimos metros o unidades / Sin stock / Consultar.
+- **Calculadora**: con el ancho y alto de la pared dice cuántos metros lineales de panel y cuántos perfiles hacen falta (+10% de desperdicio).
+- **Presupuesto**: el cliente agrega productos, colores y cantidades y lo manda armado por WhatsApp.
 - **Contacto**: WhatsApp, Instagram, ubicación y horario.
 
 ## Logo
