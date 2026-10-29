@@ -8,7 +8,7 @@
   var items = [];   // filas tal cual vienen (cada color es una fila)
   var grupos = [];  // filas agrupadas por "grupo" -> una tarjeta cada una
   var elegido = {}; // grupo -> índice de la variante elegida
-  var filtro = { cat: "Todos", q: "", soloStock: false };
+  var abierto = null; // panel desplegado en la pared de lamas
   var cart = loadCart();
 
   var $ = function (sel) { return document.querySelector(sel); };
@@ -123,7 +123,7 @@
   function variante(g) { return g.variantes[elegido[g.clave] || 0]; }
   function anchoM(p) { return p.ancho_cm ? p.ancho_cm / 100 : null; }
 
-  // Cortes de los perfiles (vista de frente del extremo), con el panel de 10 mm punteado.
+  // Cortes de los perfiles (vista del extremo), con el panel de 10 mm punteado.
   var PERFILES = {
     moldura: '<path class="pf" d="M30 10h12v34q0 18 18 18h40v10H30z"/>',
     borde: '<rect class="pnl" x="44" y="32" width="70" height="16"/><path class="pf" d="M28 22h56v8H36v20h48v8H28z"/>',
@@ -131,92 +131,96 @@
     h: '<rect class="pnl" x="2" y="32" width="46" height="16"/><rect class="pnl" x="72" y="32" width="46" height="16"/><path class="pf" d="M14 22h92v8H64v20h42v8H14v-8h42V30H14z"/>'
   };
 
-  function swatch(p) {
-    var oscuro = esOscuro(p.color) ? " dark" : "";
-    if (p.imagen) return '<div class="swatch"><img src="' + esc(p.imagen) + '" alt="' + esc(nombreCompleto(p)) + '" loading="lazy">';
-    if (p.tipo === "perfil" && PERFILES[p.perfil]) {
-      return '<div class="swatch s-perfil' + oscuro + '" style="--c:' + esc(p.color) + '">' +
-        '<svg viewBox="0 0 120 80" aria-hidden="true">' + PERFILES[p.perfil] + "</svg>";
-    }
-    var tex = p.textura === "madera" ? " madera" : "";
-    var lamas = p.ancho_cm >= 25 ? " ancha" : "";
-    return '<div class="swatch s-lama' + tex + lamas + oscuro + '" style="--c:' + esc(p.color) + '">';
-  }
-
   function badge(p) {
     if (p.stock == null) return '<span class="badge ask">Consultar stock</span>';
-    if (p.stock <= 0) return '<span class="badge out">Sin stock · consultar ingreso</span>';
+    if (p.stock <= 0) return '<span class="badge out">Sin stock</span>';
     if (p.stock <= (STOCK_BAJO[p.unidad] || 10)) {
-      return '<span class="badge low">' + (p.unidad === "m" ? "Últimos " + fmtNum.format(p.stock) + " m" : "Últimas " + p.stock + " unidades") + "</span>";
+      return '<span class="badge low">' + (p.unidad === "m" ? "Últimos " + fmtNum.format(p.stock) + " m" : "Últimas " + p.stock + " u.") + "</span>";
     }
     return '<span class="badge ok">En stock</span>';
   }
 
-  // ---------- Catálogo ----------
-
-  function renderChips() {
-    var cats = ["Todos"];
-    items.forEach(function (p) { if (cats.indexOf(p.categoria) < 0) cats.push(p.categoria); });
-    $("#chips").innerHTML = cats.map(function (c) {
-      return '<button type="button" class="chip" aria-pressed="' + (c === filtro.cat) + '" data-cat="' + esc(c) + '">' + esc(c) + "</button>";
-    }).join("");
-  }
-
-  function card(g) {
-    var p = variante(g);
-    var specs = p.tipo === "panel"
-      ? "<dt>Ancho</dt><dd>" + fmtNum.format(p.ancho_cm) + " cm</dd>" +
-        "<dt>Espesor</dt><dd>" + fmtNum.format(p.espesor_mm) + " mm</dd>" +
-        "<dt>Venta</dt><dd>Por metro lineal</dd>" +
-        "<dt>Cubre</dt><dd>" + fmtNum.format(anchoM(p)) + " m² por metro</dd>"
-      : (p.largo_m ? "<dt>Largo</dt><dd>" + fmtNum.format(p.largo_m) + " m</dd>" : "") +
-        (p.espesor_mm ? "<dt>Para</dt><dd>Panel de " + fmtNum.format(p.espesor_mm) + " mm</dd>" : "");
-    if (p.uso) specs += "<dt>Uso</dt><dd>" + esc(p.uso) + "</dd>";
-
-    var colores = g.variantes.length > 1
-      ? '<div class="colors"><span class="colors-label">Color: <strong>' + esc(p.color_nombre) + "</strong></span>" +
-        '<div class="dots">' + g.variantes.map(function (v, i) {
-          return '<button type="button" class="dot" style="--c:' + esc(v.color) + '" data-grupo="' + esc(g.clave) + '" data-i="' + i +
-            '" aria-pressed="' + (v === p) + '" title="' + esc(v.color_nombre) + '"><span class="sr-only">' + esc(v.color_nombre) + "</span></button>";
-        }).join("") + "</div></div>"
-      : "";
-
-    var precio = conPrecio(p)
+  function precio(p) {
+    return conPrecio(p)
       ? '<span class="price">' + fmtPeso.format(p.precio) + "<small>" + porUnidad(p) + "</small></span>"
       : '<span class="price">Consultar<small>precio por WhatsApp</small></span>';
+  }
 
+  function claseLama(p) {
+    return "s-lama" + (p.textura === "madera" ? " madera" : "") + (esOscuro(p.color) ? " dark" : "");
+  }
+
+  // ---------- Paneles: pared de lamas ----------
+
+  function lama(p) {
+    var open = p.id === abierto;
+    var titulo = p.color_nombre + (p.ancho_cm !== 20 ? " " + fmtNum.format(p.ancho_cm) + " cm" : "");
     var enCart = cart[p.id];
     return (
-      '<article class="card">' + swatch(p) + badge(p) +
-        (p.destacado ? '<span class="tag-dest">Más pedido</span>' : "") + "</div>" +
-        '<div class="card-body">' +
-          '<span class="card-cat">' + esc(p.categoria) + "</span>" +
-          "<h3>" + esc(p.nombre) + "</h3>" + colores +
-          '<dl class="specs">' + specs + "</dl>" +
-          '<div class="card-foot">' + precio +
-            '<button type="button" class="add' + (enCart ? " added" : "") + '" data-add="' + esc(p.id) + '">' +
-              (enCart ? "✓ " + cantidad(p, enCart) : "Agregar") + "</button>" +
+      '<div class="lama" data-lama="' + esc(p.id) + '" aria-expanded="' + open + '">' +
+        '<button type="button" class="lama-face ' + claseLama(p) + '" style="--c:' + esc(p.color) + '" data-open="' + esc(p.id) + '" aria-label="Ver ' + esc(p.nombre) + '"></button>' +
+        '<span class="lama-tag">' + esc(p.color_nombre) + " · " + fmtNum.format(p.ancho_cm) + " cm</span>" +
+        '<div class="lama-info">' +
+          '<div class="lama-top"><h3>' + esc(titulo) + "</h3>" + badge(p) + "</div>" +
+          '<dl class="specs">' +
+            "<div><dt>Ancho</dt><dd>" + fmtNum.format(p.ancho_cm) + " cm</dd></div>" +
+            "<div><dt>Espesor</dt><dd>" + fmtNum.format(p.espesor_mm) + " mm</dd></div>" +
+            "<div><dt>Cubre</dt><dd>" + fmtNum.format(anchoM(p)) + " m² / m</dd></div>" +
+            "<div><dt>Uso</dt><dd>" + esc(p.uso || "") + "</dd></div>" +
+          "</dl>" +
+          '<div class="buy">' + precio(p) +
+            '<div class="buy-ctl">' +
+              '<input type="number" min="1" inputmode="numeric" id="m-' + esc(p.id) + '" value="' + (enCart || 10) + '" aria-label="Metros lineales">' +
+              '<span class="unit">m</span>' +
+              '<button type="button" class="btn btn-solid btn-sm add' + (enCart ? " added" : "") + '" data-add="' + esc(p.id) + '">' + (enCart ? "Actualizar" : "Agregar") + "</button>" +
+            "</div>" +
           "</div>" +
         "</div>" +
-      "</article>"
+      "</div>"
     );
   }
 
-  function renderGrid() {
-    var q = filtro.q.trim().toLowerCase();
-    var lista = grupos.filter(function (g) {
-      var p = g.variantes[0];
-      if (filtro.cat !== "Todos" && p.categoria !== filtro.cat) return false;
-      if (filtro.soloStock && !g.variantes.some(function (v) { return v.stock == null || v.stock > 0; })) return false;
-      if (q) {
-        var texto = g.variantes.map(function (v) { return v.nombre + " " + v.categoria + " " + (v.color_nombre || "") + " " + (v.uso || ""); }).join(" ");
-        if (texto.toLowerCase().indexOf(q) < 0) return false;
-      }
-      return true;
-    });
-    $("#grid").innerHTML = lista.map(card).join("");
-    $("#empty").hidden = lista.length > 0;
+  function renderPaneles() {
+    var lista = items.filter(function (p) { return p.tipo === "panel"; });
+    if (!abierto && lista.length) abierto = lista[0].id;
+    $("#lamas").innerHTML = lista.map(lama).join("");
   }
+
+  function abrir(id) {
+    abierto = id;
+    document.querySelectorAll("#lamas .lama").forEach(function (el) {
+      el.setAttribute("aria-expanded", String(el.getAttribute("data-lama") === id));
+    });
+  }
+
+  // ---------- Terminaciones: ficha técnica ----------
+
+  function fila(g) {
+    var p = variante(g);
+    var colores = '<div class="colors"><span class="colors-label">Color · <strong>' + esc(p.color_nombre) + "</strong></span>" +
+      '<div class="dots">' + g.variantes.map(function (v, i) {
+        return '<button type="button" class="dot" style="--c:' + esc(v.color) + '" data-grupo="' + esc(g.clave) + '" data-i="' + i +
+          '" aria-pressed="' + (v === p) + '" title="' + esc(v.color_nombre) + '"><span class="sr-only">' + esc(v.color_nombre) + "</span></button>";
+      }).join("") + "</div></div>";
+    var enCart = cart[p.id];
+    return (
+      '<li class="perfil">' +
+        '<div class="corte" style="--c:' + esc(p.color) + '"><svg viewBox="0 0 120 80" aria-hidden="true">' + (PERFILES[p.perfil] || "") + "</svg></div>" +
+        '<div class="perfil-nombre"><h3>' + esc(p.nombre) + "</h3><p>" + esc(p.uso || "") + "</p></div>" +
+        '<div class="perfil-meta">' + colores + "</div>" +
+        '<div class="perfil-buy">' + badge(p) + precio(p) +
+          '<button type="button" class="btn btn-line btn-sm add' + (enCart ? " added" : "") + '" data-add="' + esc(p.id) + '">' +
+            (enCart ? "✓ " + enCart + " en presupuesto" : "Agregar") + "</button>" +
+        "</div>" +
+      "</li>"
+    );
+  }
+
+  function renderPerfiles() {
+    $("#perfiles").innerHTML = grupos.filter(function (g) { return g.variantes[0].tipo === "perfil"; }).map(fila).join("");
+  }
+
+  function renderCatalogo() { renderPaneles(); renderPerfiles(); }
 
   // ---------- Calculadora ----------
 
@@ -265,7 +269,7 @@
     if (qty > 0) cart[id] = qty; else delete cart[id];
     saveCart();
     renderCart();
-    renderGrid();
+    renderCatalogo();
   }
 
   function renderCart() {
@@ -295,22 +299,20 @@
   // ---------- Eventos ----------
 
   function bind() {
-    $("#chips").addEventListener("click", function (e) {
-      var b = e.target.closest("[data-cat]");
-      if (!b) return;
-      filtro.cat = b.getAttribute("data-cat");
-      renderChips(); renderGrid();
-    });
-    $("#q").addEventListener("input", function (e) { filtro.q = e.target.value; renderGrid(); });
-    $("#solo-stock").addEventListener("change", function (e) { filtro.soloStock = e.target.checked; renderGrid(); });
-
-    $("#grid").addEventListener("click", function (e) {
-      var dot = e.target.closest("[data-grupo]");
-      if (dot) { elegido[dot.getAttribute("data-grupo")] = +dot.getAttribute("data-i"); renderGrid(); return; }
+    $("#lamas").addEventListener("click", function (e) {
+      var face = e.target.closest("[data-open]");
+      if (face) { abrir(face.getAttribute("data-open")); return; }
       var b = e.target.closest("[data-add]");
       if (!b) return;
-      var id = b.getAttribute("data-add"), p = porId(id);
-      setQty(id, (cart[id] || 0) + (p.unidad === "m" ? 10 : 1));
+      var id = b.getAttribute("data-add");
+      setQty(id, Math.max(1, Math.floor(num(document.getElementById("m-" + id).value) || 0)));
+    });
+
+    $("#perfiles").addEventListener("click", function (e) {
+      var dot = e.target.closest("[data-grupo]");
+      if (dot) { elegido[dot.getAttribute("data-grupo")] = +dot.getAttribute("data-i"); renderPerfiles(); return; }
+      var b = e.target.closest("[data-add]");
+      if (b) setQty(b.getAttribute("data-add"), (cart[b.getAttribute("data-add")] || 0) + 1);
     });
 
     ["calc-prod", "calc-ancho", "calc-alto", "calc-desc"].forEach(function (id) {
@@ -339,7 +341,7 @@
       var id = e.target.getAttribute("data-qty");
       if (id) setQty(id, Math.max(0, Math.floor(num(e.target.value) || 0)));
     });
-    $("#cart-clear").addEventListener("click", function () { cart = {}; saveCart(); renderCart(); renderGrid(); });
+    $("#cart-clear").addEventListener("click", function () { cart = {}; saveCart(); renderCart(); renderCatalogo(); });
   }
 
   function datosContacto() {
@@ -357,39 +359,18 @@
     $("#desp-pct").textContent = Math.round((CFG.desperdicio != null ? CFG.desperdicio : 0.1) * 100);
   }
 
-  // Halo de luz que sigue al mouse (solo con mouse, no en celulares).
-  function haloMouse() {
-    var aura = document.getElementById("aura");
-    if (!aura || !window.matchMedia("(pointer: fine)").matches) return;
-    var pend = null;
-    window.addEventListener("pointermove", function (e) {
-      if (pend) return;
-      pend = requestAnimationFrame(function () {
-        aura.style.setProperty("--mx", e.clientX + "px");
-        aura.style.setProperty("--my", e.clientY + "px");
-        pend = null;
-      });
-    }, { passive: true });
-  }
-
   // ---------- Inicio ----------
 
   datosContacto();
-  haloMouse();
   bind();
   cargarProductos().then(function (lista) {
     items = lista;
     grupos = agrupar(items);
-    var conDato = items.filter(function (p) { return p.stock != null; });
-    var conStock = conDato.filter(function (p) { return p.stock > 0; }).length;
-    $("#stock-note").textContent = grupos.length + " productos · " + items.length + " variantes de color" +
-      (conDato.length ? " · " + conStock + " con stock" : " · stock a confirmar por WhatsApp");
-    renderChips();
-    renderGrid();
+    renderCatalogo();
     renderCalcSelect();
     calcular();
     renderCart();
   }).catch(function () {
-    $("#stock-note").textContent = "No pudimos cargar el catálogo. Consultanos por WhatsApp.";
+    $("#lamas").outerHTML = '<p class="section-sub">No pudimos cargar el catálogo. Consultanos por WhatsApp.</p>';
   });
 })();
