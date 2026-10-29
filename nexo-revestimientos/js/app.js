@@ -154,7 +154,7 @@
   function tarjetaPanel(p) {
     var enCart = cart[p.id];
     var media = p.imagen
-      ? '<div class="card-media"><img src="' + esc(p.imagen) + '" alt="' + esc(p.nombre) + '" loading="lazy">'
+      ? '<div class="card-media foto"><img src="' + esc(p.imagen) + '" alt="' + esc(p.nombre) + '" loading="lazy">'
       : '<div class="card-media ' + claseLama(p) + '" style="--c:' + esc(p.color) + '">';
     return (
       '<article class="card">' + media + badge(p) + "</div>" +
@@ -195,7 +195,10 @@
     var enCart = cart[p.id];
     return (
       '<article class="card">' +
-        '<div class="card-media corte" style="--c:' + esc(p.color) + '"><svg viewBox="0 0 120 80" aria-hidden="true">' + (PERFILES[p.perfil] || "") + "</svg>" + badge(p) + "</div>" +
+        (p.imagen
+          ? '<div class="card-media foto"><img src="' + esc(p.imagen) + '" alt="' + esc(nombreCompleto(p)) + '" loading="lazy">'
+          : '<div class="card-media corte" style="--c:' + esc(p.color) + '"><svg viewBox="0 0 120 80" aria-hidden="true">' + (PERFILES[p.perfil] || "") + "</svg>") +
+        badge(p) + "</div>" +
         '<div class="card-body">' +
           '<div class="card-head"><span class="card-kicker">Barra de ' + fmtNum.format(p.largo_m) + " m</span>" +
             "<h3>" + esc(p.nombre.replace(/\s*(×|x)\s*3 m$|\s3 m$/, "")) + "</h3></div>" +
