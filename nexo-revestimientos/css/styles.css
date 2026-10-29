@@ -99,9 +99,15 @@ body::before {
 }
 .pieza img { width: 100%; height: auto; filter: drop-shadow(0 22px 26px rgba(0,0,0,.75)); }
 .pieza span {
-  position: absolute; z-index: 5; right: 4%; top: 88%; white-space: nowrap;
-  font: 500 .64rem/1 var(--f-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--fg);
-  background: rgba(0,0,0,.88); padding: 6px 9px; border: 1px solid var(--line-2);
+  position: absolute; z-index: 5; right: 4%; top: 84%; white-space: nowrap;
+  display: grid; gap: 4px; background: rgba(0,0,0,.9); padding: 8px 11px; border: 1px solid var(--line-2);
+}
+.pieza span b { font: 600 .8rem/1 var(--f-display); font-stretch: 112%; letter-spacing: -.005em; color: var(--fg); }
+.pieza span small { font: 500 .58rem/1 var(--f-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+@media (max-width: 520px) {
+  .pieza span { padding: 6px 8px; gap: 3px; }
+  .pieza span b { font-size: .7rem; }
+  .pieza span small { font-size: .52rem; }
 }
 .hero-stack:hover .pieza { transform: translate(calc(var(--i) * -6px), calc(var(--i) * 8px)); }
 @keyframes entra { from { transform: translateY(14px); } to { transform: none; } }
