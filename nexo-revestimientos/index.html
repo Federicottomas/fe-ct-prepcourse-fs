@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Nexo Revestimientos</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Placas y revestimientos de PVC en Jesús María, Córdoba. Símil madera, símil mármol, paneles 3D y varillados. Stock disponible y presupuestos por WhatsApp.">
+<meta property="og:title" content="Nexo Revestimientos">
+<meta property="og:description" content="Placas de PVC para tus espacios · Jesús María, Córdoba">
+<meta property="og:image" content="img/logo.jpg">
+<link rel="icon" href="img/logo-180.jpg">
+<link rel="apple-touch-icon" href="img/logo-180.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Michroma&family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap topbar-in">
+    <a class="brand" href="#inicio" aria-label="Nexo Revestimientos, inicio">
+      <img src="img/logo-180.jpg" alt="" width="40" height="40">
+      <span class="brand-name">NEXO<small>Revestimientos</small></span>
+    </a>
+    <nav class="nav" aria-label="Secciones">
+      <a href="#catalogo">Catálogo</a>
+      <a href="#calculadora">Calculadora</a>
+      <a href="#como-trabajamos">Cómo trabajamos</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+    <a class="btn btn-wa btn-sm" data-wa="Hola Nexo! Quería hacer una consulta." href="#" target="_blank" rel="noopener">WhatsApp</a>
+  </div>
+</header>
+
+<main id="inicio">
+
+  <section class="hero">
+    <div class="wrap hero-in">
+      <div class="hero-copy">
+        <p class="eyebrow">Placas de PVC · Jesús María, Córdoba</p>
+        <h1 class="steel">Renová paredes y techos sin obra.</h1>
+        <p class="lead">Revestimientos de PVC lisos, símil madera, símil mármol, paneles 3D y varillados. Se instalan en seco, no absorben humedad y se limpian con un trapo.</p>
+        <div class="hero-cta">
+          <a class="btn btn-steel" href="#catalogo">Ver placas en stock</a>
+          <a class="btn btn-ghost" href="#calculadora">Calcular cuántas necesito</a>
+        </div>
+      </div>
+      <div class="hero-wall" aria-hidden="true">
+        <div class="slab s-madera"></div>
+        <div class="slab s-marmol"></div>
+        <div class="slab s-varillado"></div>
+        <div class="slab s-3d"></div>
+        <img class="hero-logo" src="img/logo.jpg" alt="">
+      </div>
+    </div>
+    <div class="wrap">
+      <ul class="perks">
+        <li><strong>Resiste la humedad</strong><span>Ideal para baños, cocinas y lavaderos.</span></li>
+        <li><strong>Instalación en seco</strong><span>Sin revoque, sin pintura, sin escombro.</span></li>
+        <li><strong>Limpieza fácil</strong><span>Agua y detergente, nada más.</span></li>
+        <li><strong>Liviano y durable</strong><span>No se pudre ni lo atacan las termitas.</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="catalogo" class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Catálogo</p>
+          <h2>Placas disponibles</h2>
+        </div>
+        <p class="stock-note" id="stock-note">Cargando stock…</p>
+      </div>
+
+      <div class="filters">
+        <div class="chips" id="chips" role="group" aria-label="Filtrar por tipo"></div>
+        <div class="filters-right">
+          <label class="search">
+            <span class="sr-only">Buscar placa</span>
+            <input id="q" type="search" placeholder="Buscar: roble, mármol, gris…" autocomplete="off">
+          </label>
+          <label class="toggle"><input id="solo-stock" type="checkbox"> Solo con stock</label>
+        </div>
+      </div>
+
+      <div class="grid" id="grid"></div>
+      <p class="empty" id="empty" hidden>No hay placas que coincidan. Probá con otro filtro o <a data-wa="Hola Nexo! Busco una placa que no encontré en la web." href="#" target="_blank" rel="noopener">consultanos por WhatsApp</a>.</p>
+    </div>
+  </section>
+
+  <section id="calculadora" class="section section-alt">
+    <div class="wrap calc">
+      <div class="calc-copy">
+        <p class="eyebrow">Calculadora</p>
+        <h2>¿Cuántas placas necesito?</h2>
+        <p>Medí el ancho y el alto de la pared (o el largo y el ancho del techo). Restá puertas y ventanas si querés más precisión. Sumamos un <span id="desp-pct">10</span>% por cortes y encastres.</p>
+      </div>
+      <form class="calc-form" id="calc-form" novalidate>
+        <label for="calc-prod">Placa</label>
+        <select id="calc-prod"></select>
+        <div class="row2">
+          <div>
+            <label for="calc-ancho">Ancho (m)</label>
+            <input id="calc-ancho" type="number" inputmode="decimal" min="0" step="0.01" value="3.5">
+          </div>
+          <div>
+            <label for="calc-alto">Alto (m)</label>
+            <input id="calc-alto" type="number" inputmode="decimal" min="0" step="0.01" value="2.6">
+          </div>
+        </div>
+        <label for="calc-desc">Descontar aberturas (m²)</label>
+        <input id="calc-desc" type="number" inputmode="decimal" min="0" step="0.1" value="0">
+        <output class="calc-out" id="calc-out" for="calc-prod calc-ancho calc-alto calc-desc"></output>
+        <button class="btn btn-steel" type="submit">Sumar al presupuesto</button>
+      </form>
+    </div>
+  </section>
+
+  <section id="como-trabajamos" class="section">
+    <div class="wrap">
+      <p class="eyebrow">Cómo trabajamos</p>
+      <h2>De la consulta a la pared terminada</h2>
+      <ol class="steps">
+        <li><h3>Consultás</h3><p>Elegís la placa en la web o nos mandás una foto del ambiente por WhatsApp.</p></li>
+        <li><h3>Calculamos</h3><p>Con tus medidas te pasamos cantidad de placas, perfiles y terminaciones.</p></li>
+        <li><h3>Retirás o enviamos</h3><p>Retiro en Jesús María o envío a Colonia Caroya, Sinsacate y la zona.</p></li>
+        <li><h3>Instalación</h3><p>Si querés, te recomendamos instaladores de confianza.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="contacto" class="section section-alt">
+    <div class="wrap contact">
+      <div>
+        <p class="eyebrow">Contacto</p>
+        <h2>Pedí tu presupuesto</h2>
+        <p class="lead">Respondemos por WhatsApp. Mandanos medidas y fotos del lugar y te asesoramos sin compromiso.</p>
+        <a class="btn btn-wa" data-wa="Hola Nexo! Quería pedir un presupuesto." href="#" target="_blank" rel="noopener">Escribinos por WhatsApp</a>
+      </div>
+      <dl class="contact-list">
+        <div><dt>WhatsApp</dt><dd><span id="wa-num"></span></dd></div>
+        <div><dt>Instagram</dt><dd><a id="ig-link" href="#" target="_blank" rel="noopener"></a></dd></div>
+        <div><dt>Ubicación</dt><dd><a id="map-link" href="#" target="_blank" rel="noopener"></a></dd></div>
+        <div><dt>Horario</dt><dd id="horario"></dd></div>
+      </dl>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="wrap footer-in">
+    <img src="img/logo-180.jpg" alt="Nexo Revestimientos" width="56" height="56">
+    <p>© <span id="year"></span> Nexo Revestimientos · Jesús María, Córdoba. Precios y stock sujetos a cambios.</p>
+  </div>
+</footer>
+
+<!-- Presupuesto -->
+<div class="cartbar" id="cartbar" hidden>
+  <div class="wrap cartbar-in">
+    <button class="cartbar-toggle" id="cart-open" type="button" aria-expanded="false" aria-controls="cart-panel">
+      <span id="cart-count">0</span> en tu presupuesto
+    </button>
+    <a class="btn btn-wa btn-sm" id="cart-send" href="#" target="_blank" rel="noopener">Enviar por WhatsApp</a>
+  </div>
+  <div class="cart-panel" id="cart-panel" hidden>
+    <div class="wrap">
+      <ul class="cart-list" id="cart-list"></ul>
+      <p class="cart-total" id="cart-total"></p>
+      <button class="link-btn" id="cart-clear" type="button">Vaciar presupuesto</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
