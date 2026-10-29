@@ -5,15 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Nexo Revestimientos</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<meta name="description" content="Placas y revestimientos de PVC en Jesús María, Córdoba. Símil madera, símil mármol, paneles 3D y varillados. Stock disponible y presupuestos por WhatsApp.">
+<meta name="description" content="Paneles de PVC para cielorrasos y paredes en Jesús María, Córdoba. Blanco, negro, fresno almendro y Valencia, con molduras y perfiles. Presupuestos por WhatsApp.">
 <meta property="og:title" content="Nexo Revestimientos">
 <meta property="og:description" content="Placas de PVC para tus espacios · Jesús María, Córdoba">
-<meta property="og:image" content="img/logo.jpg">
-<link rel="icon" href="img/logo-180.jpg">
+<meta property="og:image" content="img/logo-512.jpg">
+<link rel="icon" href="img/logo.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="img/logo-180.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Michroma&family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Source+Sans+3:wght@400;600&display=swap">
 <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
@@ -21,7 +21,7 @@
 <header class="topbar">
   <div class="wrap topbar-in">
     <a class="brand" href="#inicio" aria-label="Nexo Revestimientos, inicio">
-      <img src="img/logo-180.jpg" alt="" width="40" height="40">
+      <img src="img/logo.svg" alt="" width="42" height="42">
       <span class="brand-name">NEXO<small>Revestimientos</small></span>
     </a>
     <nav class="nav" aria-label="Secciones">
@@ -39,28 +39,28 @@
   <section class="hero">
     <div class="wrap hero-in">
       <div class="hero-copy">
-        <p class="eyebrow">Placas de PVC · Jesús María, Córdoba</p>
-        <h1 class="steel">Renová paredes y techos sin obra.</h1>
-        <p class="lead">Revestimientos de PVC lisos, símil madera, símil mármol, paneles 3D y varillados. Se instalan en seco, no absorben humedad y se limpian con un trapo.</p>
+        <p class="eyebrow">Paneles de PVC · Jesús María, Córdoba</p>
+        <h1 class="steel">Cielorrasos y paredes de PVC, listos sin obra.</h1>
+        <p class="lead">Paneles machimbre de 10 mm en blanco, negro, fresno almendro y Valencia, con todas las molduras, perfiles y uniones para terminarlos. Vendemos por metro lineal, cortado a la medida de tu ambiente.</p>
         <div class="hero-cta">
-          <a class="btn btn-steel" href="#catalogo">Ver placas en stock</a>
-          <a class="btn btn-ghost" href="#calculadora">Calcular cuántas necesito</a>
+          <a class="btn btn-steel" href="#catalogo">Ver productos</a>
+          <a class="btn btn-ghost" href="#calculadora">Calcular cuántos metros necesito</a>
         </div>
       </div>
       <div class="hero-wall" aria-hidden="true">
-        <div class="slab s-madera"></div>
-        <div class="slab s-marmol"></div>
-        <div class="slab s-varillado"></div>
-        <div class="slab s-3d"></div>
-        <img class="hero-logo" src="img/logo.jpg" alt="">
+        <div class="slab s-lama" style="--c:#f2f2ef"></div>
+        <div class="slab s-lama madera" style="--c:#c9b59a"></div>
+        <div class="slab s-lama dark" style="--c:#1d1e20"></div>
+        <div class="slab s-lama madera" style="--c:#9a6c48"></div>
+        <img class="hero-logo" src="img/logo.svg" alt="">
       </div>
     </div>
     <div class="wrap">
       <ul class="perks">
-        <li><strong>Resiste la humedad</strong><span>Ideal para baños, cocinas y lavaderos.</span></li>
-        <li><strong>Instalación en seco</strong><span>Sin revoque, sin pintura, sin escombro.</span></li>
-        <li><strong>Limpieza fácil</strong><span>Agua y detergente, nada más.</span></li>
-        <li><strong>Liviano y durable</strong><span>No se pudre ni lo atacan las termitas.</span></li>
+        <li><strong>Impermeable</strong><span>Ideal para baños, cocinas, lavaderos y galerías.</span></li>
+        <li><strong>Sin mantenimiento</strong><span>No se pinta. Se limpia con agua y detergente.</span></li>
+        <li><strong>Resiste hongos</strong><span>Apto para ambientes húmedos y locales de comida.</span></li>
+        <li><strong>Autoextinguible</strong><span>El PVC no propaga la llama.</span></li>
       </ul>
     </div>
   </section>
@@ -70,7 +70,7 @@
       <div class="section-head">
         <div>
           <p class="eyebrow">Catálogo</p>
-          <h2>Placas disponibles</h2>
+          <h2>Paneles y terminaciones</h2>
         </div>
         <p class="stock-note" id="stock-note">Cargando stock…</p>
       </div>
@@ -79,15 +79,15 @@
         <div class="chips" id="chips" role="group" aria-label="Filtrar por tipo"></div>
         <div class="filters-right">
           <label class="search">
-            <span class="sr-only">Buscar placa</span>
-            <input id="q" type="search" placeholder="Buscar: roble, mármol, gris…" autocomplete="off">
+            <span class="sr-only">Buscar producto</span>
+            <input id="q" type="search" placeholder="Buscar: negro, moldura, fresno…" autocomplete="off">
           </label>
           <label class="toggle"><input id="solo-stock" type="checkbox"> Solo con stock</label>
         </div>
       </div>
 
       <div class="grid" id="grid"></div>
-      <p class="empty" id="empty" hidden>No hay placas que coincidan. Probá con otro filtro o <a data-wa="Hola Nexo! Busco una placa que no encontré en la web." href="#" target="_blank" rel="noopener">consultanos por WhatsApp</a>.</p>
+      <p class="empty" id="empty" hidden>No hay productos que coincidan. Probá con otro filtro o <a data-wa="Hola Nexo! Busco un producto que no encontré en la web." href="#" target="_blank" rel="noopener">consultanos por WhatsApp</a>.</p>
     </div>
   </section>
 
@@ -95,19 +95,19 @@
     <div class="wrap calc">
       <div class="calc-copy">
         <p class="eyebrow">Calculadora</p>
-        <h2>¿Cuántas placas necesito?</h2>
-        <p>Medí el ancho y el alto de la pared (o el largo y el ancho del techo). Restá puertas y ventanas si querés más precisión. Sumamos un <span id="desp-pct">10</span>% por cortes y encastres.</p>
+        <h2>¿Cuántos metros necesito?</h2>
+        <p>Medí el ancho y el alto de la pared, o el largo y el ancho del techo. Restá puertas y ventanas si querés más precisión. Sumamos un <span id="desp-pct">10</span>% por cortes y encastres, y te decimos cuántos perfiles van en el contorno.</p>
       </div>
       <form class="calc-form" id="calc-form" novalidate>
-        <label for="calc-prod">Placa</label>
+        <label for="calc-prod">Panel</label>
         <select id="calc-prod"></select>
         <div class="row2">
           <div>
-            <label for="calc-ancho">Ancho (m)</label>
+            <label for="calc-ancho">Ancho / largo (m)</label>
             <input id="calc-ancho" type="number" inputmode="decimal" min="0" step="0.01" value="3.5">
           </div>
           <div>
-            <label for="calc-alto">Alto (m)</label>
+            <label for="calc-alto">Alto / ancho (m)</label>
             <input id="calc-alto" type="number" inputmode="decimal" min="0" step="0.01" value="2.6">
           </div>
         </div>
@@ -124,8 +124,8 @@
       <p class="eyebrow">Cómo trabajamos</p>
       <h2>De la consulta a la pared terminada</h2>
       <ol class="steps">
-        <li><h3>Consultás</h3><p>Elegís la placa en la web o nos mandás una foto del ambiente por WhatsApp.</p></li>
-        <li><h3>Calculamos</h3><p>Con tus medidas te pasamos cantidad de placas, perfiles y terminaciones.</p></li>
+        <li><h3>Consultás</h3><p>Elegís el panel en la web o nos mandás una foto del ambiente por WhatsApp.</p></li>
+        <li><h3>Calculamos</h3><p>Con tus medidas te pasamos los metros de panel, molduras, perfiles y uniones.</p></li>
         <li><h3>Retirás o enviamos</h3><p>Retiro en Jesús María o envío a Colonia Caroya, Sinsacate y la zona.</p></li>
         <li><h3>Instalación</h3><p>Si querés, te recomendamos instaladores de confianza.</p></li>
       </ol>
@@ -153,7 +153,7 @@
 
 <footer class="footer">
   <div class="wrap footer-in">
-    <img src="img/logo-180.jpg" alt="Nexo Revestimientos" width="56" height="56">
+    <img src="img/logo.svg" alt="Nexo Revestimientos" width="56" height="56">
     <p>© <span id="year"></span> Nexo Revestimientos · Jesús María, Córdoba. Precios y stock sujetos a cambios.</p>
   </div>
 </footer>

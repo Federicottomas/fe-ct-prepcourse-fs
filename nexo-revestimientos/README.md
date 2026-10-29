@@ -12,6 +12,11 @@ GitHub Pages, Netlify o Vercel.
 - **Presupuesto**: el cliente agrega placas y cantidades y lo manda armado por WhatsApp.
 - **Contacto**: WhatsApp, Instagram, ubicación y horario.
 
+## Logo
+
+En `marca/` está el logo redibujado en vector (`logo.svg`, escala a cualquier tamaño sin perder calidad),
+en PNG de 4096 × 4096 (con fondo y transparente) y en 1080 × 1080 para la foto de perfil de Instagram.
+
 ## Lo primero: configurar
 
 Abrir `js/config.js` y completar:
@@ -25,14 +30,19 @@ Abrir `js/config.js` y completar:
 
 Así tu viejo actualiza stock y precios desde el celular, sin tocar código.
 
-1. Crear una planilla con estas columnas en la primera fila:
+1. Crear una planilla con estas columnas en la primera fila (cada fila es un color):
 
-   | id | nombre | categoria | textura | color | ancho_cm | largo_m | espesor_mm | uso | precio | stock | destacado | imagen |
-   |----|--------|-----------|---------|-------|----------|---------|------------|-----|--------|-------|-----------|--------|
+   | id | grupo | nombre | categoria | tipo | perfil | color_nombre | color | textura | ancho_cm | espesor_mm | largo_m | unidad | uso | precio | stock | destacado | imagen |
+   |----|-------|--------|-----------|------|--------|--------------|-------|---------|----------|------------|---------|--------|-----|--------|-------|-----------|--------|
 
-   - `textura`: `liso`, `madera`, `marmol`, `3d` o `varillado` (dibuja la muestra si no hay foto).
-   - `color`: color de la muestra, ej. `#a87b4f`.
-   - `precio`: vacío = "Consultar".
+   - `grupo`: las filas con el mismo grupo se muestran en una sola tarjeta con selector de color
+     (ej. todos los colores de "Perfil de borde"). Vacío = tarjeta propia.
+   - `tipo`: `panel` (entra en la calculadora) o `perfil`.
+   - `perfil`: dibujo del corte: `moldura`, `borde`, `j` o `h` (unión).
+   - `textura`: `liso` o `madera`. `color`: color de la muestra, ej. `#c9b59a`.
+   - `unidad`: `m` (se vende por metro lineal) o `u` (por unidad).
+   - `precio`: precio de venta al público. Vacío = "Consultar".
+   - `stock`: metros o unidades disponibles. Vacío = "Consultar stock". `0` = "Sin stock".
    - `destacado`: `si` o vacío.
    - `imagen`: link a una foto (opcional; si está, reemplaza la muestra dibujada).
 2. **Archivo → Compartir → Publicar en la Web** → elegir la hoja → **CSV** → Publicar.
@@ -62,6 +72,7 @@ La forma más simple es Netlify Drop (https://app.netlify.com/drop): arrastrar l
 
 ## Pendientes / ideas
 
-- Fotos reales de las placas y de trabajos terminados (galería).
+- Fotos reales de los paneles y de trabajos terminados (galería). Pedirle al proveedor las fotos oficiales.
+- Precios de venta al público y stock real.
 - Dirección exacta y número de WhatsApp.
 - Dominio propio y link en la bio de Instagram.
