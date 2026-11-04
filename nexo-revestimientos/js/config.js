@@ -5,8 +5,8 @@ window.NEXO_CONFIG = {
   // Número de WhatsApp con código de país, sin "+", espacios ni guiones.
   // Formato Argentina celular: 549 + característica sin 0 + número sin 15.
   // Ej: (03525) 15-123456  ->  5493525123456
-  // ⚠️ REEMPLAZAR por el número real:
-  whatsapp: "5493525000000",
+  whatsapp: "5493525488992",   // principal: recibe los presupuestos de la web
+  whatsapp2: "5493525309433",  // segundo número, se muestra en Contacto
 
   instagram: "nexorevestimientos",
   direccion: "", // ej: "Av. San Martín 1234" (opcional, se usa en el link al mapa)

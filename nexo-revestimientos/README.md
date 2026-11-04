@@ -21,7 +21,7 @@ en PNG de 4096 × 4096 (con fondo y transparente) y en 1080 × 1080 para la foto
 
 Abrir `js/config.js` y completar:
 
-- `whatsapp`: número real, formato `549` + característica sin 0 + número sin 15. Ej: `5493525123456`.
+- `whatsapp` (principal, recibe los presupuestos) y `whatsapp2` (se muestra en Contacto): formato `549` + característica sin 0 + número sin 15. Ej: `5493525488992`.
 - `horario`, `direccion` (opcional), `mostrarPrecios`.
 
 ## Cómo cargar el stock
@@ -74,5 +74,5 @@ La forma más simple es Netlify Drop (https://app.netlify.com/drop): arrastrar l
 
 - Fotos reales de los paneles y de trabajos terminados (galería). Pedirle al proveedor las fotos oficiales.
 - Precios de venta al público y stock real.
-- Dirección exacta y número de WhatsApp.
+- Dirección exacta.
 - Dominio propio y link en la bio de Instagram.

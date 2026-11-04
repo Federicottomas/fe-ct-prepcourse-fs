@@ -341,8 +341,11 @@
 
   function datosContacto() {
     document.querySelectorAll("[data-wa]").forEach(function (a) { a.href = waLink(a.getAttribute("data-wa")); });
-    var n = String(CFG.whatsapp || "");
-    $("#wa-num").textContent = n ? "+" + n.replace(/^(\d{2})(\d)(\d{4})(\d+)$/, "$1 $2 $3 $4") : "—";
+    // 5493525488992 -> +54 3525 488992 (sin el 9 de celular, como se escribe en Argentina)
+    $("#wa-num").innerHTML = [CFG.whatsapp, CFG.whatsapp2].filter(Boolean).map(function (n) {
+      var txt = "+" + String(n).replace(/^54(9)?(\d{4})(\d+)$/, "54 $2 $3");
+      return '<a href="https://wa.me/' + esc(n) + '" target="_blank" rel="noopener">' + esc(txt) + "</a>";
+    }).join("<br>") || "—";
     var ig = $("#ig-link");
     ig.href = "https://instagram.com/" + CFG.instagram;
     ig.textContent = "@" + CFG.instagram;
