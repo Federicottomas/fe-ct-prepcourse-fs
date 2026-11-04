@@ -93,7 +93,7 @@ body::before {
   background: radial-gradient(60% 55% at 55% 50%, #1b1b1b 0%, #000 72%);
 }
 .pieza {
-  position: absolute; width: 74%; left: calc(22% - var(--i) * 7%); top: calc(2% + var(--i) * 21%);
+  position: absolute; width: 78%; left: calc(19% - var(--i) * 9%); top: calc(6% + var(--i) * 27%);
   transition: transform .5s cubic-bezier(.2,.7,.2,1);
   animation: entra .9s cubic-bezier(.2,.7,.2,1) backwards; animation-delay: calc(var(--i) * 120ms);
 }
